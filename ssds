@@ -1,0 +1,116 @@
+#!/bin/bash
+#------------------VARIABLES---------------------
+#NAME OF THE SCREEN
+NAME="SCREENNAME"
+#USER OF SCREEN PROCESS. EMPTY FOR NO SWITCH.
+USER="USER"
+#WORKING DIRECTORY. EMPTY FOR NO SWITCH.
+DIR="/WRK/DIR"
+#COMMAND TO EXECUTE
+EXECCOMMAND="./FILETOEXECUTE"
+#IF EMPTY STRING "" CTRL-C WILL BE SENT.
+SHUTDOWNCMD="exit"
+#------------------------------------------------
+color() {
+	local n="\033[0m"
+	local g="\033[32m"
+	local y="\033[33m"
+	local r="\033[31m"
+	eval "echo -en \"\$$1\""
+	echo -e "$2$n"
+}
+start() {
+	if screen -list | grep -q $NAME
+	then
+		color r "$NAME: Deamon is already active"
+		exit 2
+	fi
+	if [[ -z "${USER// }" ]]
+	then
+		if [[ -z "${DIR// }" ]]
+		then
+			screen -AdmS $NAME "$EXECCOMMAND"
+		else
+			screen -AdmS $NAME "cd $DIR;$EXECCOMMAND"
+		fi
+	else
+		if [[ -z "${DIR// }" ]]
+		then
+			screen -AdmS $NAME su $USER -c "$EXECCOMMAND"
+		else
+			screen -AdmS $NAME su $USER -c "cd $DIR;$EXECCOMMAND"
+		fi
+	fi
+	color g "$NAME: Deamon started"
+}
+stop() {
+	if ! screen -list | grep -q $NAME
+	then
+		color r "$NAME: Deamon is inactive"
+		exit 3
+	fi
+	color g "$NAME: Shutdown signal has been sent"
+	if [[ -z "${SHUTDOWNCMD// }" ]]
+	then
+		screen -r -x $NAME -p 0 -X stuff ^C
+	else
+		screen -r -x $NAME -p 0 -X stuff "$(printf '\r')$SHUTDOWNCMD$(printf '\r')"
+	fi
+	while screen -list | grep -q $NAME
+	do
+		sleep 1s
+	done
+}
+restart() {
+	stop
+	start
+}
+status() {
+	if screen -list | grep -q $NAME
+	then
+		color g "$NAME: Deamon is active"
+		exit 4
+	else
+		color r "$NAME: Deamon is inactive"
+		exit 5
+	fi
+}
+console() {
+	if ! screen -list | grep -q $NAME
+	then
+		color r "$NAME: Deamon is inactive"
+		exit 6
+	fi
+	screen -r $NAME
+}
+own() {
+	if ! [[ -z "${USER// }" ]]
+	then
+		chown -R $USER:$USER $DIR
+	fi
+}
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	status)
+		status
+		;;
+	restart)
+		restart
+		;;
+	console)
+		console
+		;;
+	chown)
+		own
+		;;
+	*)
+		echo "Usage: ./start {start|stop|restart|status|chown|console}"
+		exit 1
+		;;
+esac
+exit 0
