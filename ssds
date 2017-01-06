@@ -1,15 +1,15 @@
 #!/bin/bash
 #------------------VARIABLES---------------------
-#NAME OF THE SCREEN
 NAME="SCREENNAME"
-#USER OF SCREEN PROCESS. EMPTY FOR NO SWITCH.
+#NAME OF THE SCREEN INSTANCE
 USER="USER"
-#WORKING DIRECTORY. EMPTY FOR NO SWITCH.
+#USER OF SCREEN PROCESS. EMPTY FOR NO SWITCH.
 DIR="/WRK/DIR"
-#COMMAND TO EXECUTE
+#WORKING DIRECTORY. EMPTY FOR NO SWITCH.
 EXECCOMMAND="./FILETOEXECUTE"
-#IF EMPTY STRING "" CTRL-C WILL BE SENT.
+#COMMAND TO EXECUTE
 SHUTDOWNCMD="exit"
+#IF EMPTY STRING "" CTRL-C WILL BE SENT.
 #------------------------------------------------
 color() {
 	local n="\033[0m"
@@ -109,7 +109,7 @@ case "$1" in
 		own
 		;;
 	*)
-		echo "Usage: ./start {start|stop|restart|status|chown|console}"
+		echo "Usage: ./ssds {start|stop|restart|status|chown|console}"
 		exit 1
 		;;
 esac
