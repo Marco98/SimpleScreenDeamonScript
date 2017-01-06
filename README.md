@@ -11,6 +11,7 @@ wget -O ./osctl https://raw.githubusercontent.com/Marco98/SimpleScreenDeamonScri
 chmod +x ./osctl
 ```
 ## Configuration:
+####Just open the script with a text editor of your choice.
 #####NAME="SCREENNAME"
 Name of the screen instance
 #####USER="USER"
