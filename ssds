@@ -1,5 +1,5 @@
 #!/bin/bash
-#------------------VARIABLES---------------------
+#------------------CONFIGURATION---------------------
 NAME="SCREENNAME"
 #NAME OF THE SCREEN INSTANCE
 USER="USER"
@@ -10,7 +10,7 @@ EXECCOMMAND="./FILETOEXECUTE"
 #COMMAND TO EXECUTE
 SHUTDOWNCMD="exit"
 #IF EMPTY STRING "" CTRL-C WILL BE SENT.
-#------------------------------------------------
+#----------------------------------------------------------------
 color() {
 	local n="\033[0m"
 	local g="\033[32m"
