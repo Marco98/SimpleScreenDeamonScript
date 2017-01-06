@@ -11,14 +11,13 @@ wget -O ./osctl https://raw.githubusercontent.com/Marco98/SimpleScreenDeamonScri
 chmod +x ./osctl
 ```
 ## Configuration:
-####NAME="SCREENNAME"
-NAME OF THE SCREEN INSTANCE
-####USER="USER"
-USER OF SCREEN PROCESS. EMPTY FOR NO SWITCH.
-####DIR="/WRK/DIR"
-WORKING DIRECTORY. EMPTY FOR NO SWITCH.
-####EXECCOMMAND="./FILETOEXECUTE"
-COMMAND TO EXECUTE
-####SHUTDOWNCMD="exit"
-IF EMPTY STRING "" CTRL-C WILL BE SENT.
-####USER OF SCREEN PROCESS. EMPTY FOR NO SWITCH.
+#####NAME="SCREENNAME"
+Name of the screen instance
+#####USER="USER"
+User that runs the command in the screen. Empty for current user.
+#####DIR="/WRK/DIR"
+Working directory. Empty for current directory.
+#####EXECCOMMAND="./FILETOEXECUTE"
+Command to execute in the screen.
+#####SHUTDOWNCMD="exit"
+Command to send to stop the process. Empty to send a CTRL-C.
