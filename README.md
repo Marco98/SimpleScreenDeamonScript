@@ -7,8 +7,8 @@ Controls a simple deamon with GNU Screen
 ```
 ## Deployment:
 ```
-wget -O ./osctl https://raw.githubusercontent.com/Marco98/SimpleScreenDeamonScript/master/ssds
-chmod +x ./osctl
+wget -O ./ssds https://raw.githubusercontent.com/Marco98/SimpleScreenDeamonScript/master/ssds
+chmod +x ./ssds
 ```
 You will also need **screen**. In the Debian Repos, the package is just called "**screen**".
 ## Configuration:
