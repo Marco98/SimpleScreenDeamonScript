@@ -12,7 +12,7 @@ Controls a simple deamon with GNU Screen
 wget -O ./ssds https://raw.githubusercontent.com/Marco98/SimpleScreenDeamonScript/master/ssds
 chmod +x ./ssds
 ```
-You will also need **screen**. In the Debian Repos, the package is just called "**screen**".
+You will also need **screen**. In the Debian/Ubuntu Repos, the package is simply called "**screen**".
 ## Configuration:
 ####Just open the script with a text editor of your choice.
 
