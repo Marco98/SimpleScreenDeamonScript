@@ -1,6 +1,8 @@
 # SimpleScreenDeamonScript
 Controls a simple deamon with GNU Screen
-
+##Please read this before usage:
+####SSDS is currently not working if you are a non root user and want to su into a diffrent user!
+####Please be patient, i'll work on a solution when i have the time to do so.
 ## Usage:
 ```
 ./ssds {start|stop|restart|status|chown|console}
