@@ -71,7 +71,7 @@ stop() {
 		sleep 1s
 		printf "."
 	done
-	color g "\n$NAME: Deamon is now inactive"
+	echo -en "\n"
 }
 restart() {
 	stop
