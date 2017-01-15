@@ -46,9 +46,9 @@ start() {
 	else
 		if [[ -z "${DIR// }" ]]
 		then
-			screen -AdmS $NAME su $USER -s /bin/bash -c "$EXECCOMMAND"
+			screen -AdmS $NAME su $NEWUSER -s /bin/bash -c "$EXECCOMMAND"
 		else
-			screen -AdmS $NAME su $USER -s /bin/bash -c "cd $DIR;$EXECCOMMAND"
+			screen -AdmS $NAME su $NEWUSER -s /bin/bash -c "cd $DIR;$EXECCOMMAND"
 		fi
 	fi
 	color g "$NAME: Deamon started"
