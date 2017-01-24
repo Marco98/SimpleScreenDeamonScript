@@ -1,6 +1,6 @@
 #!/bin/bash
-#-----------------SSDS BY MARCO98-------------------
-#------------------CONFIGURATION--------------------
+#---------------------SSDS BY MARCO98-----------------------
+#----------------------CONFIGURATION------------------------
 NAME="SCREENNAME"
 #NAME OF THE SCREEN INSTANCE
 NEWUSER="USER"
@@ -10,8 +10,15 @@ DIR="/WRK/DIR"
 EXECCOMMAND="./FILETOEXECUTE"
 #COMMAND TO EXECUTE
 SHUTDOWNCMD="exit"
-#IF EMPTY STRING "" CTRL-C WILL BE SENT.
-#---------------------------------------------------
+#IF EMPTY STRING CTRL-C WILL BE SENT.
+USEWATCHDOG="false"
+#IF ENABLED, PROGRAM WILL BE RESTARTED AFTER CLOSE/CRASH/...
+#------------------------------------------------------------
+if [ $USEWATCHDOG == "true" ]
+then
+	mkdir -p /tmp/ssds/ &>/dev/null
+	EXECCOMMAND="while [ -e \"/tmp/ssds/$NAME\" ];do $EXECCOMMAND;if [ -e \"/tmp/ssds/$NAME\" ];then echo -e \"\033[31mSSDS: Watchdog Triggered!\033[0m\";fi;done"
+fi
 color() {
 	local n="\033[0m"
 	local g="\033[32m"
@@ -34,6 +41,10 @@ start() {
 	then
 		color r "$NAME: Deamon is already active"
 		exit 2
+	fi
+	if [ $USEWATCHDOG == "true" ]
+	then
+		touch /tmp/ssds/$NAME &>/dev/null
 	fi
 	if [[ -z "${NEWUSER// }" ]] || [[ "$USER" == "$NEWUSER" ]]
 	then
@@ -58,6 +69,10 @@ stop() {
 	then
 		color r "$NAME: Deamon is inactive"
 		exit 3
+	fi
+	if [ $USEWATCHDOG == "true" ]
+	then
+		rm /tmp/ssds/$NAME &>/dev/null
 	fi
 	if [[ -z "${SHUTDOWNCMD// }" ]]
 	then

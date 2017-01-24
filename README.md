@@ -35,3 +35,7 @@ Command to execute in the screen.
 **SHUTDOWNCMD="exit"**
 
 Command to send to stop the process. Empty to send a CTRL-C.
+
+**USEWATCHDOG="false"**
+
+If true, the Program will simply restart after a crash or close. It will only stop after using the "stop" function.
