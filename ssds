@@ -5,6 +5,8 @@ NAME="SCREENNAME"
 #NAME OF THE SCREEN INSTANCE
 NEWUSER="USER"
 #USER OF SCREEN PROCESS. EMPTY FOR NO SWITCH.
+NEWUSERPASSWD=""
+#PASSWORD OF THE USER. LEAVE EMPTY IF NOT REQUIRED.
 DIR="/WRK/DIR"
 #WORKING DIRECTORY. EMPTY FOR NO SWITCH.
 EXECCOMMAND="./FILETOEXECUTE"
@@ -12,13 +14,30 @@ EXECCOMMAND="./FILETOEXECUTE"
 SHUTDOWNCMD="exit"
 #IF EMPTY STRING CTRL-C WILL BE SENT.
 USEWATCHDOG="false"
-#IF ENABLED, PROGRAM WILL BE RESTARTED AFTER CLOSE/CRASH/...
+#IF ENABLED, PROGRAM WILL BE RESTARTED AFTER CLOSE/CRASH/....
 #------------------------------------------------------------
 if [ $USEWATCHDOG == "true" ]
 then
 	mkdir -p /tmp/ssds/ &>/dev/null
 	EXECCOMMAND="while [ -e \"/tmp/ssds/$NAME\" ];do $EXECCOMMAND;if [ -e \"/tmp/ssds/$NAME\" ];then echo -e \"\033[31mSSDS: Watchdog Triggered!\033[0m\";fi;done"
 fi
+if ! [ -z "${DIR// }" ]
+then
+	EXECCOMMAND="cd $DIR;$EXECCOMMAND"
+fi
+setupsu() {
+	if [[ -z "${NEWUSER// }" ]] || [[ "$USER" == "$NEWUSER" ]]
+	then
+		local SU="/bin/bash"
+	else
+		local SU="su $NEWUSER -s /bin/bash"
+		if ! [ -z $NEWUSERPASSWD ]
+		then
+			SU="echo $NEWUSERPASSWD | $SU -S"
+		fi
+	fi
+	echo $SU
+}
 color() {
 	local n="\033[0m"
 	local g="\033[32m"
@@ -46,22 +65,7 @@ start() {
 	then
 		touch /tmp/ssds/$NAME &>/dev/null
 	fi
-	if [[ -z "${NEWUSER// }" ]] || [[ "$USER" == "$NEWUSER" ]]
-	then
-		if [[ -z "${DIR// }" ]]
-		then
-			screen -AdmS $NAME bash -c "$EXECCOMMAND"
-		else
-			screen -AdmS $NAME bash -c "cd $DIR;$EXECCOMMAND"
-		fi
-	else
-		if [[ -z "${DIR// }" ]]
-		then
-			screen -AdmS $NAME su $NEWUSER -s /bin/bash -c "$EXECCOMMAND"
-		else
-			screen -AdmS $NAME su $NEWUSER -s /bin/bash -c "cd $DIR;$EXECCOMMAND"
-		fi
-	fi
+	screen -AdmS $NAME $(setupsu) -c "$EXECCOMMAND"
 	color g "$NAME: Deamon started"
 }
 stop() {
@@ -78,7 +82,7 @@ stop() {
 	then
 		screen -r -x $NAME -p 0 -X stuff ^C
 	else
-		screen -r -x $NAME -p 0 -X stuff "$(printf '\r')$SHUTDOWNCMD$(printf '\r')"
+		screen -r -x $NAME -p 0 -X stuff "$SHUTDOWNCMD$(printf \\r)"
 	fi
 	printf "\033[32m$NAME: Shutdown signal has been sent..."
 	while [ $(running) == "true" ]

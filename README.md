@@ -1,13 +1,10 @@
 # SimpleScreenDeamonScript
 Controls a simple deamon with GNU Screen
-##Please read this before usage:
-####SSDS is currently not working if you are a non root user and want to su into a diffrent user!
-####Please be patient, i'll work on a solution when i have the time to do so.
 ## Usage:
 ```
 ./ssds {start|stop|restart|status|chown|console}
 ```
-## Deployment:
+## Simple Deployment:
 ```
 wget -O ./ssds https://raw.githubusercontent.com/Marco98/SimpleScreenDeamonScript/master/ssds
 chmod +x ./ssds
@@ -20,9 +17,12 @@ You will also need **screen**. In the Debian/Ubuntu Repos, the package is simply
 
 Name of the screen instance
 
-**USER="USER"**
+**NEWUSER="USER"**
 
 User that runs the command in the screen. Empty for current user.
+
+**NEWUSERPASSWD=""**
+If su needs the Password to SU to the NEWUSER you can enter it here.
 
 **DIR="/WRK/DIR"**
 
