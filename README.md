@@ -21,8 +21,7 @@ Name of the screen instance
 
 User that runs the command in the screen. Empty for current user.
 
-**NEWUSERPASSWD=""**
-
+**DANGEROUS: NEWUSERPASSWD=""**
 If su needs the Password to SU to the NEWUSER you can enter it here.
 
 **DIR="/WRK/DIR"**

@@ -6,6 +6,7 @@ NAME="SCREENNAME"
 NEWUSER="USER"
 #USER OF SCREEN PROCESS. EMPTY FOR NO SWITCH.
 NEWUSERPASSWD=""
+##THIS FUNCTION IS DANGEROUS. I HIGHLY RECOMEND TO NOT USE IT!
 #PASSWORD OF THE USER. LEAVE EMPTY IF NOT REQUIRED.
 DIR="/WRK/DIR"
 #WORKING DIRECTORY. EMPTY FOR NO SWITCH.
@@ -31,10 +32,6 @@ setupsu() {
 		local SU="/bin/bash"
 	else
 		local SU="su $NEWUSER -s /bin/bash"
-		if ! [ -z $NEWUSERPASSWD ]
-		then
-			SU="echo $NEWUSERPASSWD | $SU -S"
-		fi
 	fi
 	echo $SU
 }
@@ -66,6 +63,9 @@ start() {
 		touch /tmp/ssds/$NAME &>/dev/null
 	fi
 	screen -AdmS $NAME $(setupsu) -c "$EXECCOMMAND"
+	if ! [ -z $NEWUSERPASSWD ]; then
+		screen -r -x $NAME -p 0 -X stuff "$NEWUSERPASSWD$(printf \\r)"
+	fi
 	color g "$NAME: Deamon started"
 }
 stop() {
