@@ -16,7 +16,12 @@ SHUTDOWNCMD="exit"
 #IF EMPTY STRING CTRL-C WILL BE SENT.
 USEWATCHDOG="false"
 #IF ENABLED, PROGRAM WILL BE RESTARTED AFTER CLOSE/CRASH/....
+EXCONFIG="ssdsconfig"
+#IF NOT EMPTY, SSDS WILL USE A EXTERNAL CONFIGURATION
 #------------------------------------------------------------
+if [ ! -z $EXCONFIG ] && [ -e $EXCONFIG ]; then
+	source $EXCONFIG
+fi
 if [ $USEWATCHDOG == "true" ]
 then
 	mkdir -p /tmp/ssds/ &>/dev/null
