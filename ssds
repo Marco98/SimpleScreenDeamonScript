@@ -122,7 +122,7 @@ console() {
 own() {
 	if ! [[ -z "${USER// }" ]]
 	then
-		chown -R $USER:$USER $DIR
+		chown -R $NEWUSER:$NEWUSER $DIR
 	fi
 }
 case "$1" in
@@ -145,7 +145,7 @@ case "$1" in
 		own
 		;;
 	*)
-		echo "Usage: ./ssds {start|stop|restart|status|chown|console}"
+		echo "Usage: $0 {start|stop|restart|status|chown|console}"
 		exit 1
 		;;
 esac
